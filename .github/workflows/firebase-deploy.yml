@@ -30,4 +30,11 @@ jobs:
         run: npm run build
 
       - name: Deploy to Firebase Hosting
-        run: npx firebase-tools deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}" --project mazerunner-99
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          if [ -z "$FIREBASE_TOKEN" ]; then
+            echo "::error::FIREBASE_TOKEN is missing or empty! Make sure it is added under Repository Secrets (not Environment secrets) at Settings -> Secrets and variables -> Actions."
+            exit 1
+          fi
+          npx --yes firebase-tools deploy --only hosting --token "$FIREBASE_TOKEN" --project mazerunner-99 --non-interactive
