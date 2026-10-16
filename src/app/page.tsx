@@ -348,7 +348,7 @@ export default function Home() {
 
       {/* Main Content Area */}
       {activeTab === 'guide' ? (
-        <main className="flex-1 p-4 lg:p-8 w-full max-w-full overflow-x-hidden">
+        <main className="flex-1 w-full max-w-full overflow-x-hidden bg-slate-50 min-h-[calc(100vh-3.5rem)] text-slate-800 py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
           <GuideTab
             onLoadAlgorithm={handleLoadAlgorithm}
             onGoToSimulator={() => setActiveTab('simulator')}
