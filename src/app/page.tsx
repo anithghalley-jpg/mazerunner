@@ -334,7 +334,7 @@ export default function Home() {
   );
 
   return (
-    <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden bg-[#0a0e17] text-slate-100">
+    <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden bg-[#0a0e17] text-slate-100 pt-[53px]">
       <Navbar
         activeTab={activeTab}
         onChangeTab={setActiveTab}
@@ -348,14 +348,14 @@ export default function Home() {
 
       {/* Main Content Area */}
       {activeTab === 'guide' ? (
-        <main className="flex-1 w-full max-w-full overflow-x-hidden bg-slate-50 min-h-[calc(100vh-3.5rem)] text-slate-800 py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
+        <main className="flex-1 w-full max-w-full overflow-x-hidden bg-slate-50 min-h-[calc(100vh-53px)] text-slate-800 py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
           <GuideTab
             onLoadAlgorithm={handleLoadAlgorithm}
             onGoToSimulator={() => setActiveTab('simulator')}
           />
         </main>
       ) : (
-        <main className="flex-1 p-2 sm:p-2.5 flex flex-col w-full max-w-full mx-auto h-[calc(100dvh-3.5rem)] min-h-0 overflow-hidden">
+        <main className="flex-1 p-2 sm:p-2.5 flex flex-col w-full max-w-full mx-auto h-[calc(100dvh-53px)] min-h-0 overflow-hidden">
           {/* Grid Layout Container */}
           <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-2.5 sm:gap-3 min-w-0 w-full max-w-full h-full overflow-hidden">
             {layoutMode === 'maze-left' ? (

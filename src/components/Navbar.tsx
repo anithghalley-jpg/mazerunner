@@ -30,7 +30,7 @@ export default function Navbar({
   onChangePanelRatio,
 }: NavbarProps) {
   return (
-    <header className="border-b border-slate-800 bg-[#0c121e]/95 backdrop-blur-md sticky top-0 z-30 px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
+    <header className="border-b border-slate-800 bg-[#0c121e]/95 backdrop-blur-md fixed top-0 left-0 right-0 z-50 px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
       {/* Brand & Title */}
       <div className="flex items-center gap-3">
         <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-600/20 text-white shrink-0">
