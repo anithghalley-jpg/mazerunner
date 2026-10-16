@@ -13,6 +13,7 @@ import {
   Sparkles,
   Columns2,
   ExternalLink,
+  Download,
 } from 'lucide-react';
 import MarkdownRenderer from '@/components/MarkdownRenderer';
 import {
@@ -72,6 +73,67 @@ export default function DocumentationEditorPage() {
       setSaveToast('Reset to original curriculum defaults.');
       setTimeout(() => setSaveToast(null), 3000);
     }
+  };
+
+  const handleExportStoreFile = () => {
+    const jsonStr = JSON.stringify(sections, null, 2);
+    const tsCode = `export interface DocumentationSection {
+  id: string;
+  title: string;
+  category: string;
+  markdown: string;
+}
+
+export const DEFAULT_DOCUMENTATION_SECTIONS: Record<string, DocumentationSection> = ${jsonStr};
+
+const STORAGE_KEY = 'maze_runner_documentation_data_v1';
+const SYNC_EVENT = 'maze_runner_docs_updated';
+
+export function getDocumentationData(): Record<string, DocumentationSection> {
+  if (typeof window === 'undefined') {
+    return DEFAULT_DOCUMENTATION_SECTIONS;
+  }
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return DEFAULT_DOCUMENTATION_SECTIONS;
+    const parsed = JSON.parse(raw);
+    return { ...DEFAULT_DOCUMENTATION_SECTIONS, ...parsed };
+  } catch (err) {
+    console.error('Failed to read documentation from localStorage', err);
+    return DEFAULT_DOCUMENTATION_SECTIONS;
+  }
+}
+
+export function saveDocumentationData(data: Record<string, DocumentationSection>): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    window.dispatchEvent(new CustomEvent(SYNC_EVENT, { detail: data }));
+  } catch (err) {
+    console.error('Failed to save documentation to localStorage', err);
+  }
+}
+
+export function resetDocumentationData(): Record<string, DocumentationSection> {
+  if (typeof window === 'undefined') return DEFAULT_DOCUMENTATION_SECTIONS;
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+    window.dispatchEvent(new CustomEvent(SYNC_EVENT, { detail: DEFAULT_DOCUMENTATION_SECTIONS }));
+  } catch (err) {
+    console.error('Failed to reset documentation data', err);
+  }
+  return DEFAULT_DOCUMENTATION_SECTIONS;
+}
+`;
+    const blob = new Blob([tsCode], { type: 'text/typescript' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'documentationStore.ts';
+    a.click();
+    URL.revokeObjectURL(url);
+    setSaveToast('Exported documentationStore.ts file!');
+    setTimeout(() => setSaveToast(null), 3500);
   };
 
   // Keyboard shortcut Cmd+S / Ctrl+S to save
@@ -136,6 +198,15 @@ export default function DocumentationEditorPage() {
           >
             <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
             <span className="hidden sm:inline">Reset Defaults</span>
+          </button>
+
+          <button
+            onClick={handleExportStoreFile}
+            className="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-medium transition-colors cursor-pointer flex items-center gap-1.5"
+            title="Export documentationStore.ts file to commit to git"
+          >
+            <Download className="w-3.5 h-3.5 text-slate-500" />
+            <span className="hidden sm:inline">Export Code</span>
           </button>
 
           <button
