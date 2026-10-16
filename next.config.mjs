@@ -1,4 +1,4 @@
-const isGithubActions = process.env.GITHUB_ACTIONS === 'true';
+const isGitHubPages = process.env.TARGET_DEPLOY === 'github-pages';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -7,8 +7,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: isGithubActions ? '/mazerunner' : '',
-  assetPrefix: isGithubActions ? '/mazerunner/' : undefined,
+  basePath: isGitHubPages ? '/mazerunner' : '',
+  assetPrefix: isGitHubPages ? '/mazerunner/' : undefined,
 };
 
 export default nextConfig;
